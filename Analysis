@@ -1,0 +1,199 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.signal import find_peaks, peak_widths
+import sys
+import scipy
+sys.path.append('C:/Users/victo/Desktop/KF5_Radiation_Environment/lib')
+import fittingFunctions
+
+h = scipy.constants.h # Js
+c = scipy.constants.c # m/s
+E = (17.45 * 10**3) * 1.6021766339999e-19 # J
+wavelength = (h * c) / E  # m
+
+# Read data file
+df = pd.read_csv("C:/Users/victo/Desktop/Sample1.txt", delim_whitespace=True, header=None, index_col=False)
+df.columns = ["Column1", "Column2"]
+
+df2 = pd.read_csv("C:/Users/victo/Desktop/Sample2.txt", delim_whitespace=True, header=None, index_col=False)
+df2.columns = ["Column1", "Column2"]
+
+# Convert to radians from degrees
+rad = np.radians(df["Column1"]/2)
+rad2 = np.radians(df2["Column1"]/2)
+
+# Define the xmin and max
+x_min1, x_max1 = 0.1, rad.max() 
+
+# Finding the peaks and FWHM then plotting
+peaks, _ = find_peaks(df["Column2"], height=4)  # Height is the threshold for the peak to be marked
+widths, width_heights, left_ips, right_ips = peak_widths(df["Column2"], peaks, rel_height=0.5) #FWHM
+
+# Plot data with FWHM
+plt.plot(rad, df["Column2"], label="Spectrum 1")
+plt.ylim(0, 50) 
+plt.xlim(0.1,)
+plt.xlabel("Theta")
+plt.ylabel("Intensity")
+plt.legend()
+plt.show()
+
+first_peak = fittingFunctions.perform_Gaussian_fit(x=rad, # your x data 
+                                              y=df["Column2"],           # your y data 
+                                              region_start=0.13,   # -> TODO <- Insert channel number from where to START fitting.
+                                              region_stop=0.16,    # -> TODO <- Insert channel number from where to STOP fitting.
+                                              mu_guess=0.15,       # -> TODO <- Insert intial guess of peak centroid (mean value of the peak)
+                                              A_guess=45,        # -> TODO <- Insert intial guess for the constant 'A' (amplitude of the peak)
+                                              sigma_guess=0.02)    # -> TODO <- Insert intial guess for the standard diviation (width of the peak)
+
+first_peak1 = fittingFunctions.perform_Gaussian_fit(x=rad, # your x data 
+                                              y=df["Column2"],           # your y data 
+                                              region_start=0.17,   # -> TODO <- Insert channel number from where to START fitting.
+                                              region_stop=0.19,    # -> TODO <- Insert channel number from where to STOP fitting.
+                                              mu_guess=0.18,       # -> TODO <- Insert intial guess of peak centroid (mean value of the peak)
+                                              A_guess=20,        # -> TODO <- Insert intial guess for the constant 'A' (amplitude of the peak)
+                                              sigma_guess=0.02)    # -> TODO <- Insert intial guess for the standard diviation (width of the peak)
+
+first_peak2 = fittingFunctions.perform_Gaussian_fit(x=rad, # your x data 
+                                              y=df["Column2"],           # your y data 
+                                              region_start=0.245,   # -> TODO <- Insert channel number from where to START fitting.
+                                              region_stop=0.26,    # -> TODO <- Insert channel number from where to STOP fitting.
+                                              mu_guess=0.253,       # -> TODO <- Insert intial guess of peak centroid (mean value of the peak)
+                                              A_guess=15,        # -> TODO <- Insert intial guess for the constant 'A' (amplitude of the peak)
+                                              sigma_guess=0.02)    # -> TODO <- Insert intial guess for the standard diviation (width of the peak)
+
+first_peak3 = fittingFunctions.perform_Gaussian_fit(x=rad, # your x data 
+                                              y=df["Column2"],           # your y data 
+                                              region_start=0.28,   # -> TODO <- Insert channel number from where to START fitting.
+                                              region_stop=0.30,    # -> TODO <- Insert channel number from where to STOP fitting.
+                                              mu_guess=0.29,       # -> TODO <- Insert intial guess of peak centroid (mean value of the peak)
+                                              A_guess=15,        # -> TODO <- Insert intial guess for the constant 'A' (amplitude of the peak)
+                                              sigma_guess=0.02)    # -> TODO <- Insert intial guess for the standard diviation (width of the peak)
+
+first_peak4 = fittingFunctions.perform_Gaussian_fit(x=rad, # your x data 
+                                              y=df["Column2"],           # your y data 
+                                              region_start=0.304,   # -> TODO <- Insert channel number from where to START fitting.
+                                              region_stop=0.315,    # -> TODO <- Insert channel number from where to STOP fitting.
+                                              mu_guess=0.31,       # -> TODO <- Insert intial guess of peak centroid (mean value of the peak)
+                                              A_guess=5,        # -> TODO <- Insert intial guess for the constant 'A' (amplitude of the peak)
+                                              sigma_guess=0.02)    # -> TODO <- Insert intial guess for the standard diviation (width of the peak)
+
+# Repeat for second dataset
+x_min, x_max = 0.15, rad2.max() 
+
+peaks2, _ = find_peaks(df2["Column2"], height=3.4)
+widths2, width_heights2, left_ips2, right_ips2 = peak_widths(df2["Column2"], peaks2, rel_height=0.5)
+
+plt.plot(rad2, df2["Column2"], label="Spectrum 2")
+plt.ylim(0, 13)
+plt.xlim(0.15,)
+plt.xlabel("Theta")
+plt.ylabel("Intensity")
+plt.legend()
+plt.show()
+
+
+first_peak5 = fittingFunctions.perform_Gaussian_fit(x=rad2, # your x data 
+                                              y=df2["Column2"],           # your y data 
+                                              region_start=0.173,   # -> TODO <- Insert channel number from where to START fitting.
+                                              region_stop=0.181,    # -> TODO <- Insert channel number from where to STOP fitting.
+                                              mu_guess=0.177,       # -> TODO <- Insert intial guess of peak centroid (mean value of the peak)
+                                              A_guess=12,        # -> TODO <- Insert intial guess for the constant 'A' (amplitude of the peak)
+                                              sigma_guess=0.02)    # -> TODO <- Insert intial guess for the standard diviation (width of the peak)
+
+
+first_peak6 = fittingFunctions.perform_Gaussian_fit(x=rad2, # your x data 
+                                              y=df2["Column2"],           # your y data 
+                                              region_start=0.248,   # -> TODO <- Insert channel number from where to START fitting.
+                                              region_stop=0.256,    # -> TODO <- Insert channel number from where to STOP fitting.
+                                              mu_guess=0.252,       # -> TODO <- Insert intial guess of peak centroid (mean value of the peak)
+                                              A_guess=4,        # -> TODO <- Insert intial guess for the constant 'A' (amplitude of the peak)
+                                              sigma_guess=0.02)    # -> TODO <- Insert intial guess for the standard diviation (width of the peak)
+
+
+first_peak7 = fittingFunctions.perform_Gaussian_fit(x=rad2, # your x data 
+                                              y=df2["Column2"],           # your y data 
+                                              region_start=0.305,   # -> TODO <- Insert channel number from where to START fitting.
+                                              region_stop=0.315,    # -> TODO <- Insert channel number from where to STOP fitting.
+                                              mu_guess=0.31,       # -> TODO <- Insert intial guess of peak centroid (mean value of the peak)
+                                              A_guess=3.5,        # -> TODO <- Insert intial guess for the constant 'A' (amplitude of the peak)
+                                              sigma_guess=0.02)    # -> TODO <- Insert intial guess for the standard diviation (width of the peak)
+print("FWHM Spec 1:", 2*np.sqrt(2*np.log(2)) * 0.00165)
+print("FWHM Spec 1:", 2*np.sqrt(2*np.log(2)) * 0.00249)
+print("FWHM Spec 1:", 2*np.sqrt(2*np.log(2)) * 0.00238)
+print("FWHM Spec 1:", 2*np.sqrt(2*np.log(2)) * 0.00216)
+print("FWHM Spec 1:", 2*np.sqrt(2*np.log(2)) * 0.00319)
+print("FWHM Spec 2:", 2*np.sqrt(2*np.log(2)) * 0.00201)
+print("FWHM Spec 2:", 2*np.sqrt(2*np.log(2)) * 0.00468)
+print("FWHM Spec 2:", 2*np.sqrt(2*np.log(2)) *  0.00394)
+
+# Print FWHM values
+for i, peak in enumerate(peaks):
+    peak_position1 = rad.iloc[peak]
+    # Check if the peak is within the xlim range
+    if x_min1 <= peak_position1 <= x_max1:
+        print(f"(Spectrum 1): Position = {peak_position1:.5f}, Height = {df['Column2'].iloc[peak]:.5f}")
+
+#Repeat
+for i, peak in enumerate(peaks2):
+    peak_position = rad2.iloc[peak]
+    if x_min <= peak_position <= x_max:
+        print(f"(Spectrum 2): Position = {peak_position:.5f}, Height = {df2['Column2'].iloc[peak]:.5f}")
+        
+
+def d(angle):
+    return wavelength / (np.sin(angle) * 2)
+
+#FCC Spectrum
+theta_values = [0.15393, 0.17765, 0.25161, 0.29557, 0.30882]
+multipliers = [np.sqrt(3), 2, np.sqrt(8), np.sqrt(11), np.sqrt(12)]
+
+# Compute d-values and apply multipliers
+d_values = [d(theta) * m for theta, m in zip(theta_values, multipliers)]
+
+# Sum and average
+d_sum = sum(d_values)
+d_avg = d_sum / len(d_values) * 10**10 #in Å
+
+print(f"Average of Fcc: {d_avg} Å")
+    
+#Bcc
+theta_values2 = [0.17765, 0.25231, 0.30952]
+multipliers2 = [np.sqrt(2), 2, np.sqrt(6)]
+
+# Compute d-values and apply multipliers
+d_values2 = [d(theta) * m for theta, m in zip(theta_values2, multipliers2)]
+
+# Sum and average
+d_sum2 = sum(d_values2)
+d_avg2 = d_sum2 / len(d_values2) * 10**10 #In Å
+
+print(f"Average of Bcc: {d_avg2} Å")
+
+#crystallite size
+def t(Beta, angle):
+    return (0.94 * wavelength) / (Beta * np.cos(angle))
+
+#Fcc
+FWHM = ([0.0038854530743010663, 0.005863501912127064, 0.00560447170717366, 0.005086411297266851, 0.007511875943648729])
+theta_values = [0.15393, 0.17765, 0.25161, 0.29557, 0.30882]
+t_values = [t(Beta, angle) for Beta, angle in zip(FWHM, theta_values)]
+    
+# Sum and average
+t_sum = sum(t_values)
+t_avg = t_sum / len(t_values) * 10**10
+
+print(f"Average t of Fcc: {t_avg} Å")
+
+#Bcc
+FWHM2 = ([0.004733188290512208, 0.011020557810744843, 0.00927799097742194])
+theta_values2 = [0.17765, 0.25231, 0.30952]
+
+t_values2 = [t(Beta, angle) for Beta, angle in zip(FWHM2, theta_values2)]
+
+# Sum and average
+t_sum2 = sum(t_values2)
+t_avg2 = t_sum2 / len(t_values2) * 10**10
+
+print(f"Average t of Bcc: {t_avg2} Å")
